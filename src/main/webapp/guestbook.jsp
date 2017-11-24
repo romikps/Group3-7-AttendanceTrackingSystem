@@ -4,11 +4,14 @@
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
+
 <%-- //[START imports]--%>
 <%@ page import="com.example.guestbook.Greeting" %>
-<%@ page import="com.example.guestbook.Guestbook" %>
 <%@ page import="com.googlecode.objectify.Key" %>
 <%@ page import="com.googlecode.objectify.ObjectifyService" %>
+<%@ page import="com.example.guestbook.Group" %>
 <%-- //[END imports]--%>
 
 <%@ page import="java.util.List" %>
@@ -36,7 +39,21 @@
 <p>Hello, ${fn:escapeXml(user.nickname)}! (You can
     <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
 <%
-    } else {
+		Map<String, Group> groups = new HashMap<String, Group>();
+		Group group1 = new Group("1", "Mon 11am - 2pm", "MI", "Michele Dodic");
+		Group group2 = new Group("2", "Fri 1am - 3pm", "MI", "Roman Priscepov");
+		groups.put(group1.number, group1);
+		groups.put(group2.number, group2);
+		
+		for (Group group : groups.values()) {
+			pageContext.setAttribute("groupNumber", group.number);
+%>
+<h3>Group #${groupNumber}</h3>
+
+<%
+	
+		}
+    } else {// USER NOT SIGNED IN
 %>
 <p>Hello!
     <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
