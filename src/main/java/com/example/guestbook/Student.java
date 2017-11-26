@@ -12,9 +12,15 @@ public class Student {
 	public List<String> registeredGroups;
 	public String studentId;
 	
-	public Student(String studentId) {
-		this.studentId = studentId;
+	public Student() {
+		studentId = "example@example.com";
 		this.registeredGroups = new ArrayList<String>();
+	}
+	
+	public Student(String studentId) {
+		this();
+		this.studentId = studentId;
+		
 	}
 	
 	public void registerInGroup(String groupId) {

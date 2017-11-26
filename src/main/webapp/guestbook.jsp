@@ -1,4 +1,3 @@
-<%-- //[START all]--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.google.appengine.api.users.User" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
@@ -6,15 +5,14 @@
 
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.List" %>
 
-<%-- //[START imports]--%>
 <%@ page import="com.example.guestbook.Greeting" %>
 <%@ page import="com.googlecode.objectify.Key" %>
 <%@ page import="com.googlecode.objectify.ObjectifyService" %>
 <%@ page import="com.example.guestbook.Group" %>
-<%-- //[END imports]--%>
+<%@ page import="com.example.guestbook.Student" %>
 
-<%@ page import="java.util.List" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
@@ -25,35 +23,57 @@
 <body>
 
 <%
-    /* String guestbookName = request.getParameter("guestbookName");
-    if (guestbookName == null) {
-        guestbookName = "default";
-    }
-    pageContext.setAttribute("guestbookName", guestbookName);*/
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
     if (user != null) {
         pageContext.setAttribute("user", user);
+        Student student = ObjectifyService.ofy()
+				.load()
+				.type(Student.class)
+				.filter("studentId", user.getEmail())
+				.first().now();
+        pageContext.setAttribute("student", student);
+        
 %>
 
 <p>Hello, ${fn:escapeXml(user.nickname)}! (You can
     <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
+    <div>${student }</div>
+    
 <%
+if (student != null && !student.registeredGroups.isEmpty()) {
+	String registeredGroupId = student.registeredGroups.get(0);
+	pageContext.setAttribute("registeredGroupId", registeredGroupId);
+%>
+
+	<h3>You are registered in Group #${registeredGroupId}</h3>
+
+<%
+} else {
+	
+
 		Map<String, Group> groups = new HashMap<String, Group>();
 		Group group1 = new Group("1", "Mon 11am - 2pm", "MI", "Michele Dodic");
 		Group group2 = new Group("2", "Fri 1am - 3pm", "MI", "Roman Priscepov");
 		groups.put(group1.number, group1);
 		groups.put(group2.number, group2);
-		
+%>
+
+<form action="/sign" method="post">
+<%		
 		for (Group group : groups.values()) {
 			pageContext.setAttribute("groupNumber", group.number);
 %>
-<h3>Group #${groupNumber}</h3>
-
+<div><input type="radio" name="groupId" value="${groupNumber}"> Group #${groupNumber}</div>
 <%
-	
 		}
-    } else {// USER NOT SIGNED IN
+%>
+<br />
+<div><input type="submit" value="Confirm Group"/></div>
+</form>
+<%
+}    
+} else {// USER NOT SIGNED IN
 %>
 <p>Hello!
     <a href="<%= userService.createLoginURL(request.getRequestURI()) %>">Sign in</a>
@@ -62,48 +82,6 @@
     }
 %>
 
-<%-- //[START datastore]--%>
-<%
-    // Create the correct Ancestor key
-    //  Key<Guestbook> theBook = Key.create(Guestbook.class, guestbookName);
-
-    // Run an ancestor query to ensure we see the most up-to-date
-    // view of the Greetings belonging to the selected Guestbook.
-    /*  List<Greeting> greetings = ObjectifyService.ofy()
-          .load()
-          .type(Greeting.class) // We want only Greetings
-          .ancestor(theBook)    // Anyone in this book
-          .order("-date")       // Most recent first - date is indexed.
-          .limit(5)             // Only show 5 of them.
-          .list();
-
-    if (greetings.isEmpty()) {
-		// <p>Guestbook '${fn:escapeXml(guestbookName)}' has no messages.</p>
-    } else {
-		// <p>Messages in Guestbook '${fn:escapeXml(guestbookName)}'.</p>
-      // Look at all of our greetings
-        for (Greeting greeting : greetings) {
-            pageContext.setAttribute("greeting_content", greeting.content);
-            String author;
-            if (greeting.author_email == null) {
-                author = "An anonymous person";
-            } else {
-                author = greeting.author_email;
-                String author_id = greeting.author_id;
-                if (user != null && user.getUserId().equals(author_id)) {
-                    author += " (You)";
-                }
-            }
-            pageContext.setAttribute("greeting_user", author);
-       
-            
-// <p><b>${fn:escapeXml(greeting_user)}</b> wrote:</p>
-// <blockquote>${fn:escapeXml(greeting_content)}</blockquote>
-
-        }
-    }
-    */
-%>
 <%--
 <form action="/sign" method="post">
     <div><textarea name="content" rows="3" cols="60"></textarea></div>
