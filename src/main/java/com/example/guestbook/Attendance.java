@@ -35,5 +35,11 @@ public class Attendance {
 	        logger = Key.create(AttendanceLog.class, "default");
 	      }
 	}
+	
+	public Attendance(long studentId, long week, boolean presented) {
+		this(studentId, /*student.getgroup()*/ 0, "");
+		this.weekId = week;
+		this.presented = presented;
+	}
 
 }

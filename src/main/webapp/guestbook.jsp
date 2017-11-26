@@ -119,8 +119,14 @@
 </form>
 --%>
 
-<h2 id="attendance">Attendance</h2>
-
+	<h2 id="attendance">Attendance</h2>
+	<form action="#" method="post">
+		<div><label>Student ID:</label><input type="text" name="studentID_value"/></label></div>
+		<div><label>Week:</label><input type="text" name="week_value"/></label></div>
+		<div><label>Presented:</label><input type="checkbox" name="presented_value"/></label></div>
+	    <div><input type="submit" value="Post Attendance"/></div>
+	</form>
+	
 </body>
 </html>
 <%-- //[END all]--%>

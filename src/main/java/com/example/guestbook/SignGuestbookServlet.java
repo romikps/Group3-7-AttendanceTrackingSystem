@@ -47,7 +47,7 @@ public class SignGuestbookServlet extends HttpServlet {
   // Process the http POST of the form
   @Override
   public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    Greeting greeting;
+    /*Greeting greeting;
 
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();  // Find out who the user is.
@@ -64,7 +64,21 @@ public class SignGuestbookServlet extends HttpServlet {
     // will immediately get a new page using redirect and we want the data to be present.
     ObjectifyService.ofy().save().entity(greeting).now();
 
-    resp.sendRedirect("/guestbook.jsp?guestbookName=" + guestbookName);
+    resp.sendRedirect("/guestbook.jsp?guestbookName=" + guestbookName);*/
+	  
+	Attendance a;
+    
+    long studentID = Long.parseLong(req.getParameter("studentID_value"));
+    long week = Long.parseLong(req.getParameter("week_value"));
+    String p = req.getParameter("presented_value");
+    boolean presented = false;
+    if (p.equals("on") == true) {
+    	presented = true;
+    }
+    
+    a = new Attendance(studentID, week, presented);
+    ObjectifyService.ofy().save().entity(a).now();
+    
   }
 }
 //[END all]
