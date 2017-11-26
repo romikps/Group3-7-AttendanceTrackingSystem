@@ -36,8 +36,8 @@
         pageContext.setAttribute("user", user);
 %>
 
-<p>Hello, ${fn:escapeXml(user.nickname)}! (You can
-    <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
+		<p>Hello, ${fn:escapeXml(user.nickname)}! (You can
+    	<a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
 <%
 		Map<String, Group> groups = new HashMap<String, Group>();
 		Group group1 = new Group("1", "Mon 11am - 2pm", "MI", "Michele Dodic");
@@ -48,7 +48,7 @@
 		for (Group group : groups.values()) {
 			pageContext.setAttribute("groupNumber", group.number);
 %>
-<h3>Group #${groupNumber}</h3>
+		<h3>Group #${groupNumber}</h3>
 
 <%
 	
@@ -118,6 +118,8 @@
     <div><input type="submit" value="Switch Guestbook"/></div>
 </form>
 --%>
+
+<h2 id="attendance">Attendance</h2>
 
 </body>
 </html>
