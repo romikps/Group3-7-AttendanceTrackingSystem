@@ -52,6 +52,6 @@ public class SignGuestbookServlet extends HttpServlet {
 			// now() is used to make the call synchronously
 			ObjectifyService.ofy().save().entity(student).now();
 		}
-		resp.sendRedirect("/guestbook.jsp?");
+		resp.sendRedirect("/guestbook.jsp");
 	}
 }

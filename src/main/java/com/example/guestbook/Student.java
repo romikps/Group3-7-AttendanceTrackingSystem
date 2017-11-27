@@ -5,12 +5,13 @@ import java.util.List;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class Student {
 	@Id public Long id;
 	public List<String> registeredGroups;
-	public String studentId;
+	@Index public String studentId;
 	
 	public Student() {
 		studentId = "example@example.com";

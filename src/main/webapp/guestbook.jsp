@@ -38,7 +38,6 @@
 
 <p>Hello, ${fn:escapeXml(user.nickname)}! (You can
     <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
-    <div>${student }</div>
     
 <%
 if (student != null && !student.registeredGroups.isEmpty()) {
