@@ -10,22 +10,18 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 public class Student {
 	@Id public Long id;
-	public List<String> registeredGroups;
+	public String registeredGroup;
 	@Index public String studentId;
 	
 	public Student() {
-		studentId = "example@example.com";
-		this.registeredGroups = new ArrayList<String>();
 	}
 	
 	public Student(String studentId) {
-		this();
-		this.studentId = studentId;
-		
+		this.studentId = studentId;		
 	}
 	
 	public void registerInGroup(String groupId) {
-		registeredGroups.add(groupId);
+		registeredGroup = groupId;
 	}
 	
 }

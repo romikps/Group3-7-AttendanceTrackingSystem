@@ -19,11 +19,32 @@ public class Group {
 	public String instructor;
 
 	public Group(String number, String time, String place, String instructor) {
-		super();
 		this.number = number;
 		this.time = time;
 		this.place = place;
 		this.instructor = instructor;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public String getInstructor() {
+		return instructor;
+	}
+	
+	
 }
 

@@ -23,6 +23,12 @@
 <body>
 
 <%
+	Map<String, Group> groups = new HashMap<String, Group>();
+	Group group1 = new Group("1", "Mon 11am - 2pm", "MI", "Michele Dodic");
+	Group group2 = new Group("2", "Fri 1am - 3pm", "MI", "Roman Priscepov");
+	groups.put(group1.number, group1);
+	groups.put(group2.number, group2);
+
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
     if (user != null) {
@@ -40,22 +46,19 @@
     <a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a>.)</p>
     
 <%
-if (student != null && !student.registeredGroups.isEmpty()) {
-	String registeredGroupId = student.registeredGroups.get(0);
-	pageContext.setAttribute("registeredGroupId", registeredGroupId);
+if (student != null && student.registeredGroup != null
+		&& groups.get(student.registeredGroup) != null) {
+	pageContext.setAttribute("registeredGroup", groups.get(student.registeredGroup));
+	
 %>
 
-	<h3>You are registered in Group #${registeredGroupId}</h3>
+	<h3>You are registered in Group #${registeredGroup.number}</h3>
+	<p>Time: ${registeredGroup.time}</p>
+	<p>Place: ${registeredGroup.place}</p>
+	<p>Instructor: ${registeredGroup.instructor}</p>
 
 <%
-} else {
-	
-
-		Map<String, Group> groups = new HashMap<String, Group>();
-		Group group1 = new Group("1", "Mon 11am - 2pm", "MI", "Michele Dodic");
-		Group group2 = new Group("2", "Fri 1am - 3pm", "MI", "Roman Priscepov");
-		groups.put(group1.number, group1);
-		groups.put(group2.number, group2);
+} else {		
 %>
 
 <form action="/sign" method="post">
