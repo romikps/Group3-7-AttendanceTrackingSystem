@@ -35,6 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.googlecode.objectify.ObjectifyService;
 
+import org.restlet.Application;
+import org.restlet.Restlet;
+import org.restlet.routing.Router;
+
+
+
 /**
  * Form Handling Servlet
  * Most of the action for this sample is in webapp/guestbook.jsp, which displays the
@@ -65,7 +71,7 @@ public class SignGuestbookServlet extends HttpServlet {
     ObjectifyService.ofy().save().entity(greeting).now();
 
     resp.sendRedirect("/guestbook.jsp?guestbookName=" + guestbookName);*/
-	  
+	
 	Attendance a;
     
     long studentID = Long.parseLong(req.getParameter("studentID_value"));
@@ -80,5 +86,23 @@ public class SignGuestbookServlet extends HttpServlet {
     ObjectifyService.ofy().save().entity(a).now();
     
   }
+  
+  
+  
+  /**
+   * Creates a root Restlet that will receive all incoming calls.
+   */
+  @Override
+  public Restlet createInboundRoot() {
+      // Create a router Restlet that routes each call to a
+      // new instance of HelloWorldResource.
+      Router router = new Router(getContext());
+
+      // Defines only one route
+      router.attachDefault(AttendanceResource.class);
+
+      return router;
+  }
+  
 }
 //[END all]
